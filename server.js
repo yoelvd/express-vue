@@ -4,56 +4,43 @@ const app = express();
 const port = 8000;
 const morgan = require('morgan');
 var r = require('rethinkdb')
+require('dotenv').config()
 
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
-var connection = null;
-let events = 
-[
-  {
-    id: 1,
-    name: 'Charity Ball',
-    category: 'Fundraising',
-    description: 'Spend an elegant night of dinner and dancing with us as we raise money for our new rescue farm.',
-    featuredImage: 'https://placekitten.com/500/500',
-    images: [
-      'https://placekitten.com/500/500',
-      'https://placekitten.com/500/500',
-      'https://placekitten.com/500/500',
-    ],
-    location: '1234 Fancy Ave',
-    date: '12-25-2019',
-    time: '11:30'
-  },
-  {
-    id: 2,
-    name: 'Rescue Center Goods Drive',
-    category: 'Adoptions',
-    description: 'Come to our donation drive to help us replenish our stock of pet food, toys, bedding, etc. We will have live bands, games, food trucks, and much more.',
-    featuredImage: 'https://placekitten.com/500/500',
-    images: [
-      'https://placekitten.com/500/500'
-    ],
-    location: '1234 Dog Alley',
-    date: '11-21-2019',
-    time: '12:00'
-  }
-];
 
-app.get('/events', (req, res) => {
-  r.db('test').table('posts').run(connection).then(result =>{
+var connection = null;
+
+app.get('/tecnicos', (req, res) => {
+  r.db(process.env.DB).table('tecnicos').run(connection).then(result =>{
     res.json(result._responses[0].r)
   }).catch(err =>{
     console.log('Error:',err)
   })
-  //res.send(events);
 });
 
-app.get('/events/:id', (req, res) => {
+app.get('/clientes', (req, res) => {
+  r.db(process.env.DB).table('clientes').run(connection).then(result =>{
+    res.json(result._responses[0].r)
+  }).catch(err =>{
+    console.log('Error:',err)
+  })
+});
+
+app.get('/productos', (req, res) => {
+  r.db(process.env.DB).table('productos').run(connection).then(result =>{
+    res.json(result._responses[0].r)
+  }).catch(err =>{
+    console.log('Error:',err)
+  })
+});
+
+
+app.get('/tecnicos/:id', (req, res) => {
   const id = req.params.id;
-  r.db('test').table('posts').get(id).run(connection).then(result =>{
+  r.db(process.env.DB).table('tecnicos').get(id).run(connection).then(result =>{
     //res.send(result._responses[0].r)
     //res.send(result)
     res.send(result)
@@ -75,10 +62,11 @@ app.listen(port, 'localhost', function (err) {
     console.log(err)
     return
   }
-  r.connect( {host: '10.0.0.160', port: 28015}, function(err, conn) {
+  r.connect( {host: process.env.DB_HOST, port: process.env.DB_PORT}, function(err, conn) {
     if (err) throw err;
     connection = conn;
+    connection.use(process.env.DB)
   })
 
-  console.log('Listening at http://localhost:'+port)
+  console.log('Listening at http://localhost:' + port )
 });

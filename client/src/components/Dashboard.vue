@@ -6,18 +6,18 @@
           :src="require('../assets/logo-eicma.png')"
           class="my-3"
           contain
-          height="200"
+          height="150"
         />
       </v-col>
 
       <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">Front-end</h1>
+        <h1 class="display-2 font-weight-bold mb-3">Tareas</h1>
       </v-col>
     </v-row>
     <v-row class="text-center">
       <v-col class="col-12">
         <p class="my-2" v-for="feed in feeds" :key="feed.id">
-          {{ feed }}
+          {{ feed.nombre }} -- {{ feed.cid }} -- {{ feed.cargo }}
         </p>
       </v-col>
     </v-row>
@@ -32,7 +32,7 @@ export default {
     feeds: [],
   }),
   async created() {
-    fetch("http://localhost:8000/events/")
+    fetch("http://localhost:8000/tecnicos/")
       .then((response) => response.json())
       .then((data) => (this.feeds = data));
   },
