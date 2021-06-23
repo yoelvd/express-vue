@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="900">
+  <v-dialog max-width="960">
     <template v-slot:activator="{ on }">
       <v-btn ripple text slot="activator" class="success ma-6" v-on="on"
         >Nueva entrada</v-btn
@@ -13,7 +13,7 @@
         <v-form>
           <v-container fluid class="mt--1">
             <v-row align="center">
-              <v-col class="col-9">
+              <v-col class="col-4">
                 <!-- <v-text-field
                   label="Tecnico"
                   prepend-icon="mdi-pencil"
@@ -32,7 +32,22 @@
                 ></v-select>
                 <!--DatePicker-->
               </v-col>
-              <v-col class="col-3">
+              <v-col class="col-6">
+                <v-select
+                  v-model="cliente"
+                  hint="Cliente"
+                  :items="clientes"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Cliente:"
+                  persistent-hint
+                  prepend-icon="mdi-account-arrow-right"
+                  return-object
+                  single-line
+                ></v-select>
+                <!--DatePicker-->
+              </v-col>
+              <v-col class="col-2">
                 <v-menu
                   v-model="menu"
                   :close-on-content-click="false"
@@ -67,7 +82,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="col-2">
+              <v-col class="col-3">
                 <v-select
                   v-model="producto"
                   hint="Seleccione el producto"
@@ -99,12 +114,12 @@
                   prepend-icon="mdi-pencil"
                 ></v-text-field>
               </v-col>
-              <v-col class="col-4">
-                <v-btn text class="mt-3 grey--text"
+              <v-col class="col-3">
+                <v-btn text small class="mt-3 grey--text"
                   ><v-icon>mdi-pencil</v-icon>Editar</v-btn
                 >
-                <v-btn text class="mt-3 grey--text"
-                  ><v-icon>mdi-delete</v-icon>Eliminar</v-btn
+                <v-btn text small class="mt-3 grey--text"
+                  ><v-icon>mdi-delete</v-icon>Borrar</v-btn
                 >
               </v-col>
             </v-row>
@@ -125,6 +140,7 @@ export default {
     productos: [],
     date: new Date().toISOString().substr(0, 10),
     menu: false,
+    cliente: false,
     modal: false,
     tecnico: false,
     producto: false,
